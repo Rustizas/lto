@@ -16,6 +16,9 @@ enc = tiktoken.get_encoding("cl100k_base")
 df["lt_gpt4"] = df["lt"].apply(lambda x: len(enc.encode(str(x))))
 df["en_gpt4"] = df["en"].apply(lambda x: len(enc.encode(str(x))))
 df["ratio_gpt4"] = round(df["lt_gpt4"] / df["en_gpt4"], 2)
+#avg symbols per token
+df["avg_char_per_token_gpt4_lt"] = round(df["lt"].str.len() / df["lt_gpt4"],2)
+df["avg_char_per_token_gpt4_en"] = round(df["en"].str.len() / df["en_gpt4"],2)
 
 #cycle through tokenizers
 for name, path in tokenizers.items():
@@ -23,5 +26,7 @@ for name, path in tokenizers.items():
     df[f"lt_{name}"] = df["lt"].apply(lambda x: len(tokenizer.encode(str(x))))
     df[f"en_{name}"] = df["en"].apply(lambda x: len(tokenizer.encode(str(x))))
     df[f"ratio_{name}"] = round(df[f"lt_{name}"]/df[f"en_{name}"], 2)
+    df[f"avg_char_per_token_{name}_lt"] = round(df["lt"].str.len() / df[f"lt_{name}"], 2)
+    df[f"avg_char_per_token_{name}_en"] = round(df["en"].str.len() / df[f"en_{name}"], 2)
 
 df.to_csv("/home/rustis/projektai/Res/lto/data/raw/token_counts_5k.csv", index=False)
