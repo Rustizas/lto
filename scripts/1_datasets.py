@@ -38,5 +38,5 @@ def sentences_list(dataset, target=5000):
     return sentences
 
 sentences_5k = sentences_list(ds, 5000)
-df = pd.DataFrame(sentences_5k, columns=['sentences'])
+df = pd.DataFrame(sentences_5k, columns=["lt"])
 df.to_csv("/home/rustis/projektai/Res/lto/data/raw/wikipedia_lithuanian_5k.csv", index=False, encoding='utf-8')
