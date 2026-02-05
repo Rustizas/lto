@@ -16,9 +16,10 @@ for name in model_names:
 		"avg_char_per_token_lt": round(df[f"avg_char_per_token_{name}_lt"].mean(), 2), #Avg symbols per token in Lithuanian
 		"min_ratio": round(df[f"ratio_{name}"].min(), 2), #Min ratio of Lithuanian to English tokens
 		"max_ratio": round(df[f"ratio_{name}"].max(), 2), #Max ratio of Lithuanian to English tokens
-		"percentile": round(df[f"ratio_{name}"].quantile(0.95), 2), #95th percentile of the ratio
+		"percentile_95": round(df[f"ratio_{name}"].quantile(0.95), 2), #95th percentile of the ratio
+		"percentile_5": round(df[f"ratio_{name}"].quantile(0.05), 2),
 		"median": round(df[f"ratio_{name}"].median(), 2) #Median of the ratio
-
+		"n_samples": len(df)
 	})
 
 results_df = pd.DataFrame(data, index=model_names)
