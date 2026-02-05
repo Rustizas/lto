@@ -3,8 +3,11 @@ import numpy
 import tiktoken
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from collections import Counter
+import re
 
 df = pd.read_csv("/home/rustis/projektai/Res/lto/data/raw/wikipedia_lt_eng.csv")
+
+patterns = re.compile(r"[a-ząčęėįšųūžĄČĘĖĮŠŲŪŽ]+")
 
 letters = "ąčęėįšųūžĄČĘĖĮŠŲŪŽ"
 tokenizers = {
@@ -16,6 +19,7 @@ utf8_rez = []
 hard_words=[]
 
 enc = tiktoken.get_encoding("cl100k_base")
+
 
 
 #Counting huggingface tokenizers
@@ -30,14 +34,16 @@ for name, path in tokenizers.items():
 				"token_count": len(ids),
 				"readable": str([tokenizer.decode([i]) for i in ids])
 			})
+
 	x_counter = Counter()
 	for text in df["lt"]:
-		words = str(text).split()
+		texts = str(text).lower()
+		words = patterns.findall(texts)
 		for word in words:
 			clean = word.strip(".,!?()\"':;-")
 			ids = tokenizer.encode(clean, add_special_tokens=False)
 			if len(ids) >= 5:
-				x_counter[clean] += 1
+				x_counter[clean] = len(ids)
 	for word, count in x_counter.most_common(100):
 		ids = tokenizer.encode(word, add_special_tokens=False)
 		breakdown = [tokenizer.decode([i]) for i in ids]
@@ -61,12 +67,13 @@ for char in letters:
 		})
 gpt4_counter = Counter()
 for text in df["lt"]:
-	words = str(text).split()
+	texts = str(text).lower()
+	words = patterns.findall(texts)
 	for word in words:
 		clean = word.strip(".,!?()\"':;-")
 		ids = enc.encode(clean)
 		if len(ids) >= 5:
-			gpt4_counter[clean] += 1
+			gpt4_counter[clean] = len(ids)
 for word, count in gpt4_counter.most_common(100):
 	ids = enc.encode(word)
 	breakdown = [enc.decode([i]) for i in ids]
