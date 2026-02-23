@@ -1,9 +1,14 @@
+import os
+from dotenv import load_dotenv
 import pandas as pd
 import numpy
 import tiktoken
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-df = pd.read_csv("/home/rustis/projektai/Res/lto/data/raw/token_counts_5k.csv")
+load_dotenv()
+dir = os.getenv("dir")
+
+df = pd.read_csv(f"{dir}/raw/token_counts_5k.csv")
 
 model_names = ["llama3", "qwen2", "mistral", "gpt4"]
 
@@ -23,4 +28,4 @@ for name in model_names:
 	})
 
 results_df = pd.DataFrame(data, index=model_names)
-results_df.to_csv("/home/rustis/projektai/Res/lto/data/processed/summary_stats.csv")
+results_df.to_csv(f"{dir}/processed/summary_stats.csv")

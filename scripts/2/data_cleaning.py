@@ -1,5 +1,10 @@
+import os
+from dotenv import load_dotenv
 from datasets import load_dataset
 import re
+
+load_dotenv()
+dir = os.getenv("dir")
 
 ds = load_dataset("uonlp/CulturaX", "lt", split="train")
 
@@ -26,4 +31,4 @@ def clean(example):
 #filtering
 ds_clean = ds.filter(clean, num_proc=8)
 
-ds_clean.save_to_disk("/home/rustis/projektai/Res/lto/data/processed/culturax_clean")
+ds_clean.save_to_disk(f"{dir}/processed/culturax_clean")

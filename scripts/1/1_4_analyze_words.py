@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 import pandas as pd
 import numpy
 import tiktoken
@@ -5,7 +7,10 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from collections import Counter
 import re
 
-df = pd.read_csv("/home/rustis/projektai/Res/lto/data/raw/wikipedia_lt_eng.csv")
+load_dotenv()
+dir = os.getenv("dir")
+
+df = pd.read_csv(f"{dir}/raw/wikipedia_lt_eng.csv")
 
 patterns = re.compile(r"[a-ząčęėįšųūžĄČĘĖĮŠŲŪŽ]+")
 
@@ -84,5 +89,5 @@ for word, count in gpt4_counter.most_common(100):
 		"breakdown": breakdown
 	})
 
-pd.DataFrame(utf8_rez).to_csv("/home/rustis/projektai/Res/lto/data/processed/utf8_tokenization.csv", index=False)
-pd.DataFrame(hard_words).to_csv("/home/rustis/projektai/Res/lto/data/processed/hard_words_tokenization.csv", index=False)
+pd.DataFrame(utf8_rez).to_csv(f"{dir}/processed/utf8_tokenization.csv", index=False)
+pd.DataFrame(hard_words).to_csv(f"{dir}/processed/hard_words_tokenization.csv", index=False)

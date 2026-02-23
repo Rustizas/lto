@@ -1,8 +1,13 @@
+import os
+from dotenv import load_dotenv
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from collections import Counter
 import torch
 import pandas as pd
 import tiktoken
+
+load_dotenv()
+dir = os.getenv("dir")
 
 tokenizers = {
     "llama3" : "meta-llama/Meta-Llama-3-8B",
@@ -10,7 +15,7 @@ tokenizers = {
     "mistral": "mistralai/Mistral-7B-v0.3",
 }
 
-df = pd.read_csv("/home/rustis/projektai/Res/lto/data/raw/wikipedia_lt_eng.csv")
+df = pd.read_csv(f"{dir}/raw/wikipedia_lt_eng.csv")
 
 def has_repetition(text, threshold=5):
     words = str(text).lower().split()
@@ -39,4 +44,4 @@ for name, path in tokenizers.items():
 
 df = df[(df["ratio_llama3"] >= 0.5) & (df["ratio_llama3"] <= 5)]
 
-df.to_csv("/home/rustis/projektai/Res/lto/data/raw/token_counts_5k.csv", index=False)
+df.to_csv(f"{dir}/raw/token_counts_5k.csv", index=False)

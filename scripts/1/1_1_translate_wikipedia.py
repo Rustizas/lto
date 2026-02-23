@@ -1,10 +1,15 @@
+import os
+from dotenv import load_dotenv
 from transformers import pipeline
 from transformers.pipelines.pt_utils import KeyDataset
 import torch
 import pandas as pd
 from datasets import Dataset
 
-df = pd.read_csv("/home/rustis/projektai/Res/lto/data/raw/wikipedia_lithuanian_5k.csv")
+load_dotenv()
+dir = os.getenv("dir")
+
+df = pd.read_csv(f"{dir}/raw/wikipedia_lithuanian_5k.csv")
 hf_dataset = Dataset.from_pandas(df)
 
 translator = pipeline(
@@ -19,4 +24,4 @@ for out in translator(KeyDataset(hf_dataset, "lt"), src_lang="lit_Latn", tgt_lan
     translated.append(out[0]["translation_text"])
 
 df["en"] = translated
-df.to_csv("/home/rustis/projektai/Res/lto/data/raw/wikipedia_lt_eng.csv", index=False)
+df.to_csv(f"{dir}/raw/wikipedia_lt_eng.csv", index=False)

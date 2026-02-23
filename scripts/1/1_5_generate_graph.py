@@ -1,8 +1,13 @@
+import os
+from dotenv import load_dotenv
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-df = pd.read_csv("/home/rustis/projektai/Res/lto/data/raw/token_counts_5k.csv")
+load_dotenv()
+dir = os.getenv("dir")
+
+df = pd.read_csv(f"{dir}/raw/token_counts_5k.csv")
 sns.set_theme(style="whitegrid")
 
 #histogram for gpt-4 token counts comparison between Lithuanian and English languages
@@ -13,7 +18,7 @@ plt.title("GPT-4 Tokenų count difference (LT vs EN)", fontsize=14)
 plt.xlabel("Token count in a sentence", fontsize=12)
 plt.ylabel("Frequency", fontsize=12)
 plt.legend()
-plt.savefig("/home/rustis/projektai/Res/lto/data/graphs/histogram_lt_en_gpt4_token_counts.png")
+plt.savefig(f"{dir}/graphs/histogram_lt_en_gpt4_token_counts.png")
 
 sns.set_theme(style="whitegrid")
 plt.figure(figsize=(12, 8))
@@ -39,4 +44,4 @@ plt.title("Sentence lenght vs token count", fontsize=14)
 plt.xlabel("Character count in a sentence", fontsize=12)
 plt.ylabel("Token count in a sentence", fontsize=12)
 plt.legend()
-plt.savefig("/home/rustis/projektai/Res/lto/data/graphs/scatter_lt_en_gpt4_token_counts.png")
+plt.savefig(f"{dir}/graphs/scatter_lt_en_gpt4_token_counts.png")

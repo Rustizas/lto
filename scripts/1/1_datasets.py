@@ -1,7 +1,12 @@
+import os
+from dotenv import load_dotenv
 import spacy
 import re
 from datasets import load_dataset
-import pandas as pd 
+import pandas as pd
+
+load_dotenv()
+dir = os.getenv("dir")
 
 nlp = spacy.load("lt_core_news_sm")
 ds = load_dataset("wikimedia/wikipedia", "20231101.lt", split="train")
@@ -39,4 +44,4 @@ def sentences_list(dataset, target=5000):
 
 sentences_5k = sentences_list(ds, 5000)
 df = pd.DataFrame(sentences_5k, columns=["lt"])
-df.to_csv("/home/rustis/projektai/Res/lto/data/raw/wikipedia_lithuanian_5k.csv", index=False, encoding='utf-8')
+df.to_csv(f"{dir}/raw/wikipedia_lithuanian_5k.csv", index=False, encoding='utf-8')
