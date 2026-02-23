@@ -23,7 +23,7 @@ for name in model_names:
 		"max_ratio": round(df[f"ratio_{name}"].max(), 2), #Max ratio of Lithuanian to English tokens
 		"percentile_95": round(df[f"ratio_{name}"].quantile(0.95), 2), #95th percentile of the ratio
 		"percentile_5": round(df[f"ratio_{name}"].quantile(0.05), 2),
-		"median": round(df[f"ratio_{name}"].median(), 2) #Median of the ratio
+		"median": round(df[f"ratio_{name}"].median(), 2), #Median of the ratio
 		"n_samples": len(df)
 	})
 
